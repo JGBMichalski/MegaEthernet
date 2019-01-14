@@ -9,4 +9,6 @@ The Arduino Mega's code that creates an Telnet connection when connected to the 
   * IN3 to Pin 10
   * IN4 to Pin 11
   * 5V and GND pins to their respective pins.
-* Download the Arduino File and upload it to the Mega.
+* Connect the Ethernet from the Ethernet Shield to the Host.
+* Download the Arduino file from this repo.
+* Upload the file to the Mega.
