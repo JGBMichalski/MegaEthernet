@@ -94,7 +94,8 @@ void setup() {
 void loop() {
   // wait for a new client:
   EthernetClient client = server.available();
-
+  String data = "";
+  bool finished = false;
   // when the client sends the first byte, say hello:
   if (client) {
     if (!gotAMessage) {
@@ -102,20 +103,43 @@ void loop() {
       client.println("Hello, client!");
       gotAMessage = true;
     }
-
+    
     // read the bytes incoming from the client:
-    char thisChar = client.read();
-    // echo the bytes back to the client:
-    int time = 10000;
-    Serial.setTimeout(time);
-    int steps_1 = thisChar; //timing out??????
-    motor1.step(steps_1);
-    Serial.write(steps_1);
-
-    server.write(thisChar);
-    // echo the bytes to the server as well:
-    Serial.print(thisChar);
-    Ethernet.maintain();
+    while (!finished){
+      char thisChar = client.read();
+      data = data + thisChar;
+    
+      if (data.indexOf(";") >= 0) {
+        finished = true;
+      }
+    }
+    
+    if (data.indexOf("x") >= 0) { 
+      String val = data.substring(1, 4);
+      // echo the bytes back to the client:
+      int time = 1000;
+      Serial.setTimeout(time);
+      int steps = val.toInt(); //timing out??????
+      motor1.step(steps);
+      Serial.write(steps);
+      // echo the bytes to the server as well:
+      Serial.print(val);
+      Ethernet.maintain();
+      
+    } else if (data.indexOf("y") >= 0) {
+      String val = data.substring(1, 4);
+      // echo the bytes back to the client:
+      int time = 1000;
+      Serial.setTimeout(time);
+      int steps = val.toInt(); //timing out??????
+      motor2.step(steps);
+      Serial.write(steps);
+      // echo the bytes to the server as well:
+      Serial.print(val);
+      Ethernet.maintain();
+    } else {
+      Serial.print("No Motor Chosen");
+      server.write("No Motor Chosen");
+    }
   }
 }
-
