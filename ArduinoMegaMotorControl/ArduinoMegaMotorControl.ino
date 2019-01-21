@@ -115,7 +115,7 @@ void loop() {
     }
     
     if (data.indexOf("x") >= 0) { 
-      String val = data.substring(1, 4);
+      String val = data.substring(1, 5);
       // echo the bytes back to the client:
       int time = 1000;
       Serial.setTimeout(time);
@@ -127,7 +127,7 @@ void loop() {
       Ethernet.maintain();
       
     } else if (data.indexOf("y") >= 0) {
-      String val = data.substring(1, 4);
+      String val = data.substring(1, 5);
       // echo the bytes back to the client:
       int time = 1000;
       Serial.setTimeout(time);
