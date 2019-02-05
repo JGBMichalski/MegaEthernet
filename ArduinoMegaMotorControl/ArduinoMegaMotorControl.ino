@@ -56,61 +56,68 @@ void setup() {
 
   // this line is for Leonardo's, it delays the serial interface
   // until the terminal window is opened
-  while (!Serial);
+  //while (!Serial);
   
-  Serial.begin(9600);
-  Serial.write("Starting...");
+  //Serial.begin(9600);
+  //Serial.write("Starting...");
   motor1.setSpeed(60);
   motor2.setSpeed(60);
   // Open serial communications and wait for port to open:
-  Serial.begin(9600);
+  //Serial.begin(9600);
   // this check is only needed on the Leonardo:
-  while (!Serial) {
+  //while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
-  }
+  //}
 
 
   // start the Ethernet connection:
-  Serial.println("Trying to get an IP address using DHCP");
+  //Serial.println("Trying to get an IP address using DHCP");
   if (Ethernet.begin(mac) == 0) {
-    Serial.println("Failed to configure Ethernet using DHCP");
+    //Serial.println("Failed to configure Ethernet using DHCP");
     // initialize the Ethernet device not using DHCP:
     Ethernet.begin(mac, ip, myDns, gateway, subnet);
   }
   // print your local IP address:
-  Serial.print("My IP address: ");
+  //Serial.print("My IP address: ");
   ip = Ethernet.localIP();
   for (byte thisByte = 0; thisByte < 4; thisByte++) {
     // print the value of each byte of the IP address:
-    Serial.print(ip[thisByte], DEC);
-    Serial.print(".");
+    //Serial.print(ip[thisByte], DEC);
+    //Serial.print(".");
   }
-  Serial.println();
+  //Serial.println();
   // start listening for clients
   server.begin();
 
 }
 
 void loop() {
-  // wait for a new client:
-  EthernetClient client = server.available();
+  EthernetClient client;
+  if (!client.available()){
+    // wait for a new client:
+    client = server.available();
+  }
   String data = "";
   bool finished = false;
   // when the client sends the first byte, say hello:
   if (client) {
     if (!gotAMessage) {
-      Serial.println("We have a new client");
-      client.println("Hello, client!");
+      //Serial.println("We have a new client");
+      //client.println("Hello, client!");
       gotAMessage = true;
     }
     
     // read the bytes incoming from the client:
-    while (!finished){
+    while (!finished && client.available()){
       char thisChar = client.read();
+      //Serial.println(thisChar);
       data = data + thisChar;
+      
     
       if (data.indexOf(";") >= 0) {
         finished = true;
+        data = data.substring(0, data.indexOf(";"));
+        //Serial.print(data);
       }
     }
     
@@ -118,27 +125,27 @@ void loop() {
       String val = data.substring(1, 5);
       // echo the bytes back to the client:
       int time = 1000;
-      Serial.setTimeout(time);
+      //Serial.setTimeout(time);
       int steps = val.toInt(); //timing out??????
-      motor1.step(steps);
-      Serial.write(steps);
+      motor2.step(steps);
+      //Serial.println(steps);
       // echo the bytes to the server as well:
-      Serial.print(val);
+      //Serial.println(val);
       Ethernet.maintain();
       
     } else if (data.indexOf("y") >= 0) {
       String val = data.substring(1, 5);
       // echo the bytes back to the client:
       int time = 1000;
-      Serial.setTimeout(time);
+      //Serial.setTimeout(time);
       int steps = val.toInt(); //timing out??????
-      motor2.step(steps);
-      Serial.write(steps);
+      motor1.step(steps);
+      //Serial.println(steps);
       // echo the bytes to the server as well:
-      Serial.print(val);
+      //Serial.println(val);
       Ethernet.maintain();
     } else {
-      Serial.print("No Motor Chosen");
+      //Serial.print("No Motor Chosen");
       server.write("No Motor Chosen");
     }
   }
