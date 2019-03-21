@@ -60,8 +60,8 @@ void setup() {
   
   Serial.begin(9600);
   Serial.write("Starting...");
-  motor1.setSpeed(30);
-  motor2.setSpeed(30);
+  motor1.setSpeed(15);
+  motor2.setSpeed(15);
   // Open serial communications and wait for port to open:
   // this check is only needed on the Leonardo:
   //while (!Serial) {
