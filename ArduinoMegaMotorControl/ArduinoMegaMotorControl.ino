@@ -105,6 +105,8 @@ void loop() {
       client.println("Hello, client!");
       gotAMessage = true;
     }
+
+    Ethernet.maintain();
     
     // read the bytes incoming from the client:
     while (!finished && client.available()){
@@ -118,6 +120,8 @@ void loop() {
         data = data.substring(0, data.indexOf(";"));
         Serial.print(data);
       }
+      
+      Ethernet.maintain();
     }
     
     if (data.indexOf("x") >= 0) { 
@@ -161,5 +165,6 @@ void loop() {
       server.write("No Motor Chosen");
     }
     data = "";
+    Ethernet.maintain();
   }
 }
