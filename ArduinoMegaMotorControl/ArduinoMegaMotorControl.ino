@@ -1,13 +1,6 @@
 /*
  DHCP Motor Control
  
- To use, telnet to your device's IP address and type.
- You can see the client's input in the serial monitor as well.
- Using an Arduino Wiznet Ethernet shield.
-
- This version attempts to get an IP address using DHCP
-
-
  Created using the DhcpChatServer Example from the Arduino IDE.
 
  */
