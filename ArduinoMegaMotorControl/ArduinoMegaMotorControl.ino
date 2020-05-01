@@ -34,7 +34,7 @@ IPAddress subnet(255, 255, 0, 0);
 
 // telnet defaults to port 23
 EthernetServer server(23);
-boolean gotAMessage = false; // whether or not you got a message from the client yet
+boolean gotAMessage = false; 
 
 void setup() {
   pinMode(in1Pin, OUTPUT);
@@ -46,21 +46,11 @@ void setup() {
   pinMode(in6Pin, OUTPUT);
   pinMode(in7Pin, OUTPUT);
   pinMode(in8Pin, OUTPUT);
-
-  // this line is for Leonardo's, it delays the serial interface
-  // until the terminal window is opened
-  //while (!Serial);
   
   Serial.begin(9600);
   Serial.write("Starting...");
   motor1.setSpeed(15);
   motor2.setSpeed(15);
-  // Open serial communications and wait for port to open:
-  // this check is only needed on the Leonardo:
-  //while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  //}
-
 
   // start the Ethernet connection:
   Serial.println("Trying to get an IP address using DHCP");
@@ -119,42 +109,23 @@ void loop() {
     
     if (data.indexOf("x") >= 0) { 
       String val = data.substring(1, data.indexOf(";"));
-      // echo the bytes back to the client:
-      //int time = 1000;
-      //Serial.setTimeout(time);
       int steps = val.toInt(); //timing out??????
       motor2.step(steps);
-      //Serial.println(steps);
-      // echo the bytes to the server as well:
-      //Serial.println(val);
       Ethernet.maintain();
       
     } else if (data.indexOf("y") >= 0) {
       String val = data.substring(1, data.indexOf(";"));
-      // echo the bytes back to the client:
-      //int time = 1000;
-      //Serial.setTimeout(time);
       int steps = val.toInt(); //timing out??????
       motor1.step(steps);
-      //Serial.println(steps);
-      // echo the bytes to the server as well:
-      //Serial.println(val);
       Ethernet.maintain();
       
     } else if (data.indexOf("s") >= 0) {
       String val = data.substring(1, data.indexOf(";"));
-      // echo the bytes back to the client:
-      //int time = 1000;
-      //Serial.setTimeout(time);
       int speed = val.toInt(); //timing out??????
       motor1.setSpeed(speed);
       motor2.setSpeed(speed);
-      //Serial.println(steps);
-      // echo the bytes to the server as well:
-      //Serial.println(val);
       Ethernet.maintain();
     }else {
-      //Serial.print("No Motor Chosen");
       server.write("No Motor Chosen");
     }
     data = "";
